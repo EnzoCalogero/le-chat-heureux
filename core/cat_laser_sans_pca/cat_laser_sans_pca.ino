@@ -74,9 +74,8 @@ void traject(){
   }
 }
 
-void configure(void)
+void box_drow(void)
 {       
-
         // basso dx
         myservo1.write(base_a);
         myservo0.write(high_a);
@@ -101,6 +100,8 @@ void setup() {
 //  Serial.println("16 channel Servo test!");
   pinMode(D0, OUTPUT);
   pinMode(D1, OUTPUT);
+  digitalWrite(D0, HIGH);   // turn the LED on (HIGH is the voltage level)
+  digitalWrite(D1, HIGH); 
   myservo0.attach(9);  // attaches the servo on pin 9 to the servo object
   myservo1.attach(10);  // attaches the servo on pin 9 to the servo object
  // pwm.begin();
@@ -108,9 +109,8 @@ void setup() {
 }
 
 void loop() {
- digitalWrite(D0, HIGH);   // turn the LED on (HIGH is the voltage level)
- digitalWrite(D1, HIGH); 
+
 //traject();
 //base();
-configure();
+box_drow();
 }
