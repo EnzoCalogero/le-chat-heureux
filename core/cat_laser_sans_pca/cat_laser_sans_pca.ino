@@ -8,6 +8,11 @@ Servo myservo1;  // create servo object to control a servo
 //uint8_t servonum = 0;
 int D0 = 2; // Left eye
 int D1 = 3; // Right eye
+
+        int base_a=10;
+        int base_b=170;
+        int high_a=100;
+        int high_b=170;
 /*
  * angleToPulse(int ang)
  * gets angle in degree and returns the pulse width
@@ -69,6 +74,27 @@ void traject(){
   }
 }
 
+void configure(void)
+{       
+
+        // basso dx
+        myservo1.write(base_a);
+        myservo0.write(high_a);
+        delay(1000);
+        // basso sx
+        myservo1.write(base_b);
+        myservo0.write(high_a);
+        delay(1000);
+        // alto sx
+        myservo1.write(base_b);
+        myservo0.write(high_b);
+        delay(1000);
+        // alto dx
+        myservo1.write(base_a);
+        myservo0.write(high_b);
+        delay(1000);
+  }
+
 
 void setup() { 
 //  Serial.begin(9600);
@@ -85,5 +111,6 @@ void loop() {
  digitalWrite(D0, HIGH);   // turn the LED on (HIGH is the voltage level)
  digitalWrite(D1, HIGH); 
 //traject();
-base();
+//base();
+configure();
 }
