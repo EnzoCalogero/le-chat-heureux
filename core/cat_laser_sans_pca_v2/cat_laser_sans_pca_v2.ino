@@ -16,7 +16,7 @@ const int ledPin =  13;      // the number of the LED pin
 // variables will change:
 int buttonState = 0;         // variable for reading the pushbutton status
 
-int center_high=120;
+//int center_high=120;
 int base_a=10;
 int base_b=170;
 int high_a=100;
@@ -65,28 +65,40 @@ void traject(){
 
 void box_drow(void)
 {       
+int high_center = analag_read_h();
+Serial.println("--------------------------------");
+
+//Serial.println(high_center);
+myservo0.write(high_center);
+/////
+
+int lateral_x = analag_read_x();
+//Serial.println(lateral_x);
+//myservo0.write(lateral_x);
+
+/////
         // basso dx
-        myservo1.write(base_a);
-        myservo0.write(center_high);
-        delay(1000);
+        myservo1.write(base_a+lateral_x);
+//        myservo0.write(center_high);
+        delay(500);
         // basso sx
-        myservo1.write(base_b);
-        myservo0.write(center_high);
-        delay(1000);
+        myservo1.write(base_b-lateral_x);
+//        myservo0.write(center_high);
+        delay(500);
         // alto sx
-        myservo1.write(base_b);
-        myservo0.write(center_high);
-        delay(1000);
+//        myservo1.write(base_b);
+//        myservo0.write(center_high);
+//        delay(500);
         // alto dx
-        myservo1.write(base_a);
-        myservo0.write(center_high);
-        delay(1000);
+//        myservo1.write(base_a);
+//        myservo0.write(center_high);
+//        delay(500);
   }
 
 
 void setup() { 
-//  Serial.begin(9600);
-//  Serial.println("16 channel Servo test!");
+  Serial.begin(9600);
+  Serial.println("16 channel Servo test!");
   pinMode(D0, OUTPUT);
   pinMode(D1, OUTPUT);
   digitalWrite(D0, HIGH);   // turn the LED on (HIGH is the voltage level)
@@ -118,23 +130,42 @@ buttonState = digitalRead(buttonPin);
   }
 }
 
+int analag_read_h() {
+  // read the input on analog pin 0:
+  int sensorValue = analogRead(A0);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float high_center = floor(sensorValue * (170.0 / 1023.0));
+  // print out the value you read:
+  Serial.println(high_center);
+  Serial.println(sensorValue);
+  return high_center;
+}
+
+int analag_read_x() {
+  // read the input on analog pin 1:
+  int sensorValue = analogRead(A1);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float lenght_x = floor(sensorValue * (60.0 / 1023.0));
+  // print out the value you read:
+  Serial.println(lenght_x);
+  Serial.println(sensorValue);
+  return lenght_x;
+
+}
+
 
 void loop() {
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
-  if (check_button()) {
-    // turn LED on:
-    digitalWrite(ledPin, HIGH);
-    traject();
-  } else {
-    // turn LED off:
-    digitalWrite(ledPin, LOW);
+//  if (check_button()) {
+//    // turn LED on:
+//    digitalWrite(ledPin, HIGH);
+//    traject();
+//  } else {
+//    // turn LED off:
+//    digitalWrite(ledPin, LOW);
     box_drow();
-  } 
-//temp change
-//center_high=center_high+5;
 
-//traject();
-//base();
-//box_drow();
+
+  
 }
