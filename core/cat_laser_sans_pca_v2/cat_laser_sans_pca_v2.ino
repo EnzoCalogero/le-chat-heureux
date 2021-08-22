@@ -16,13 +16,16 @@ const int ledPin =  13;      // the number of the LED pin
 // variables will change:
 int buttonState = 0;         // variable for reading the pushbutton status
 
-//int center_high=120;
 int base_a=10;
 int base_b=170;
 int high_a=100;
 int high_b=170;
 
-
+// states variables
+int delta_x = 40;
+int high_center =90;
+int lateral_x=20;
+int base_l=90;
 /*
  * angleToPulse(int ang)
  * gets angle in degree and returns the pulse width
@@ -65,34 +68,25 @@ void traject(){
 
 void box_drow(void)
 {       
-int high_center = analag_read_h();
-Serial.println("--------------------------------");
+high_center = analag_read_h();
+lateral_x = analag_read_x();
 
-//Serial.println(high_center);
-myservo0.write(high_center);
-/////
-
-int lateral_x = analag_read_x();
-//Serial.println(lateral_x);
-//myservo0.write(lateral_x);
-
-/////
         // basso dx
-        myservo1.write(base_a+lateral_x);
-//        myservo0.write(center_high);
+        myservo1.write(base_l + lateral_x);
+        myservo0.write(high_center - delta_x);
         delay(500);
         // basso sx
-        myservo1.write(base_b-lateral_x);
-//        myservo0.write(center_high);
+        myservo1.write(base_l-lateral_x);
+        myservo0.write(high_center - delta_x);
         delay(500);
         // alto sx
-//        myservo1.write(base_b);
-//        myservo0.write(center_high);
-//        delay(500);
+        myservo1.write(base_l-lateral_x);
+        myservo0.write(high_center + delta_x);
+        delay(500);
         // alto dx
-//        myservo1.write(base_a);
-//        myservo0.write(center_high);
-//        delay(500);
+        myservo1.write(base_l + lateral_x);
+        myservo0.write(high_center + delta_x);
+        delay(500);
   }
 
 
@@ -150,12 +144,10 @@ int analag_read_x() {
   Serial.println(lenght_x);
   Serial.println(sensorValue);
   return lenght_x;
-
 }
 
 
 void loop() {
-
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
 //  if (check_button()) {
 //    // turn LED on:
@@ -165,7 +157,5 @@ void loop() {
 //    // turn LED off:
 //    digitalWrite(ledPin, LOW);
     box_drow();
-
-
-  
+ 
 }
