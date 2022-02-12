@@ -2,27 +2,17 @@
 // our servo # counter
 Servo myservo0;  // create servo object to control a servo
 Servo myservo1;  // create servo object to control a servo
-
-
-
 int D0 = 2; // Left eye
 int D1 = 3; // Right eye
 // constants won't change. They're used here to set pin numbers:
 const int buttonPin = 4;     // the number of the pushbutton pin
-
 // variables will change:
 int buttonState = 0;         // variable for reading the pushbutton status
-
-//int base_a=10;
-//int base_b=170;
-//int high_a=100;
-//int high_b=170;
-
 // states variables
 //int delta_x = 40;
 int high_center;
 int lateral_x;
-int base_l;
+int base_l=90;
 
 void traject(){
 high_center = analag_read_h();
@@ -32,10 +22,10 @@ lateral_x = analag_read_x();
   int base;
   int high;
   int base_a=random(base_l - lateral_x, base_l + lateral_x);
-  int high_a=random(high_center-45, high_center );
+  int high_a=random(high_center - 30, high_center + 30 );
   while(check_button()==1){
-    int base_b=random(30,140);
-    int high_b=random(120,160);
+    int base_b=random(base_l - lateral_x, base_l + lateral_x);
+    int high_b=random(high_center - 30, high_center + 30);
     for( int i =0; i<10; i +=1){
         delta_base=(base_a - base_b)/10;
         delta_high=(high_a - high_b)/10;
@@ -44,7 +34,6 @@ lateral_x = analag_read_x();
         myservo1.write(base);
         myservo0.write(high);
         delay(random(50,500)); //200
-        
         }
     base_a=base_b;
     high_a=high_b;
@@ -66,8 +55,17 @@ void box_drow1(void)
         myservo0.write(high_center);
         delay(500);
         // alto sx
+ //       high_center = analag_read_h();
+ //       lateral_x = analag_read_x();
+ //       myservo1.write(base_l-lateral_x);
+ //       myservo0.write(high_center+30);
+ //       delay(500);
+ //       high_center = analag_read_h();
+ //       lateral_x = analag_read_x();
+ //       myservo1.write(base_l+lateral_x);
+ //       myservo0.write(high_center+30);
+ //       delay(500);
   }
-
 
 void setup() { 
   Serial.begin(9600);
@@ -89,12 +87,10 @@ buttonState = digitalRead(buttonPin);
   if (buttonState == HIGH) {
     // turn LED on:
   digitalWrite(D0, HIGH);   // turn the LED on (HIGH is the voltage level)
- // digitalWrite(D1, HIGH); ;
   return 1;
   } else {
     // turn LED off:
   digitalWrite(D0, LOW);   // turn the LED on (HIGH is the voltage level)
- // digitalWrite(D1, HIGH); 
   return 0;
   }
 }
@@ -102,7 +98,7 @@ buttonState = digitalRead(buttonPin);
 int analag_read_h() {
   // read the input on analog pin 0:
   int sensorValue = analogRead(A0);
-  high_center = map(sensorValue, 0, 1023, 60, 170);
+  high_center = map(sensorValue, 0, 1023, 30, 150);
   return high_center;
 }
 
