@@ -18,8 +18,6 @@ uint8_t servonum = 0;
 /*
  * angleToPulse(int ang)
  * gets angle in degree and returns the pulse width
- * also prints the value on seial monitor
- * written by Ahmad Nejrabi for Robojax, Robojax.com
  */
 int angleToPulse(int ang){
    int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
@@ -83,7 +81,7 @@ void next_status( int status[])
                 if(status[i] == 0) pwm.setPWM(i, 0, angleToPulse(90));
                 else if(status[i] == 2) pwm.setPWM(i, 0, angleToPulse(150));
                 else if(status[i] == 1) pwm.setPWM(i, 0, angleToPulse(120));
-                else if(status[i] == -1) pwm.setPWM(i, 0, angleToPulse(600));
+                else if(status[i] == -1) pwm.setPWM(i, 0, angleToPulse(60));
                 else if(status[i] == -2) pwm.setPWM(i, 0, angleToPulse(40));
                 break;
           }
@@ -99,7 +97,7 @@ for (int k=-2; k < 2; k++){
     }
   next_status(a);
   delay(500);
-}
+  }
   
   for (int k=1; k > -2; k--){
   for(int i=4;i<8;i++){ // Posizione sull'array
@@ -108,29 +106,16 @@ for (int k=-2; k < 2; k++){
   next_status(a);
   delay(500);
   }
-
 }
-
-
-void step1(void) {
-int a[8] = { 0, 0, 0, 0, -1, -1, -1, -1};
-next_status(a);
-delay(250);
-//int b[8] = { 1, 0, 0, 0, 2, 2, 0, 0};
-//next_status(b);
-delay(250); 
-  }
-
 
 void setup() {
- // Serial.begin(9600);
- // Serial.println("16 channel Servo test!");
   pwm.begin();
   pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
-// step1();
 }
 
-
 void loop(void) { 
-up_down();
+//up_down();
+//step1();
+//step2();
+move();
 }
